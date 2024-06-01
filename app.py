@@ -23,7 +23,7 @@ cities = {
 # Streamlit UI for user inputs
 st.title("Hexagon Amenity Type Visualizer")
 city = st.selectbox("Select a city", list(cities.keys()))
-n = st.slider("Minimum number of unique amenity types to highlight hexagons", 1, 10, 3)
+n = st.slider("Minimum number of unique amenity types to highlight hexagons", 1, 50, 3)
 
 # Get the bounding box for the selected city
 bbox = cities[city]
