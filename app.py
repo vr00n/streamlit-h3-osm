@@ -26,6 +26,9 @@ for lat in lat_grid:
         hex_id = h3.geo_to_h3(lat, lon, resolution)
         hexagons.add(hex_id)
 
+# Debug: Print the number of hexagons generated
+print(f"Number of hexagons generated: {len(hexagons)}")
+
 # Query OSM Turbo for amenity data within the bounding box
 overpass_url = "http://overpass-api.de/api/interpreter"
 query = f"""
@@ -41,6 +44,8 @@ response = requests.get(overpass_url, params={'data': query})
 # Check if the response is valid and contains JSON data
 if response.status_code == 200 and 'json' in response.headers.get('Content-Type', ''):
     data = response.json()
+    # Debug: Print the number of elements retrieved
+    print(f"Number of elements retrieved: {len(data['elements'])}")
 else:
     st.error("Error: Unable to retrieve data from the Overpass API.")
     st.error(f"Status Code: {response.status_code}")
@@ -55,6 +60,10 @@ for element in data['elements']:
         amenity_type = element['tags'].get('amenity')
         if amenity_type:
             amenity_counts[hex_id][amenity_type] += 1
+
+# Debug: Print the amenity counts for each hexagon
+for hex_id, counts in amenity_counts.items():
+    print(f"Hex ID: {hex_id}, Amenity counts: {counts}")
 
 # Visualize the results on a map
 map_center = [(bbox[0] + bbox[2]) / 2, (bbox[1] + bbox[3]) / 2]
@@ -72,7 +81,7 @@ for hex_id in hexagons:
         unique_amenity_types = len(amenity_counts[hex_id])
 
         # Prepare the tooltip content
-        tooltip_content = ', '.join([f"{amenity}: {count}" for amenity, count in amenity_counts[hex_id].items()])
+        tooltip_content = '<br>'.join([f"{amenity}: {count}" for amenity, count in amenity_counts[hex_id].items()])
 
         # Add the GeoJSON layer with the tooltip
         folium.GeoJson(
@@ -83,10 +92,10 @@ for hex_id in hexagons:
                 'weight': 1,
                 'fillOpacity': 0.7 if unique_amenity_types >= n else 0.1
             },
-            tooltip=folium.Tooltip(tooltip_content)
+            tooltip=folium.Tooltip(tooltip_content, sticky=True)
         ).add_to(m)
     except ValueError as e:
         st.error(f"Error rendering hexagon {hex_id}: {e}")
 
-# Display the map in Streamlit
-st_folium(m, width=700, height=500)
+# Display the map in Streamlit with increased size
+st_folium(m, width=1200, height=800)
