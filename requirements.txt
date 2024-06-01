@@ -1,0 +1,6 @@
+streamlit
+folium
+streamlit-folium
+h3
+numpy
+requests
