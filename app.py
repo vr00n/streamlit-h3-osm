@@ -6,13 +6,33 @@ import numpy as np
 import streamlit as st
 from streamlit_folium import st_folium
 
+# Dictionary of cities with their bounding box coordinates
+cities = {
+    "San Francisco": [37.7749, -122.4194, 37.8000, -122.3900],
+    "New York": [40.7128, -74.0060, 40.748817, -73.968285],
+    "Los Angeles": [34.0522, -118.2437, 34.052235, -118.243683],
+    "Chicago": [41.8781, -87.6298, 41.878114, -87.629798],
+    "Houston": [29.7604, -95.3698, 29.760427, -95.369803],
+    "Phoenix": [33.4484, -112.0740, 33.448376, -112.074036],
+    "Philadelphia": [39.9526, -75.1652, 39.952583, -75.165221],
+    "San Antonio": [29.4241, -98.4936, 29.424122, -98.493629],
+    "San Diego": [32.7157, -117.1611, 32.715738, -117.161084],
+    "Dallas": [32.7767, -96.7970, 32.776664, -96.796988],
+}
+
 # Streamlit UI for user inputs
 st.title("Hexagon Amenity Type Visualizer")
-n = st.slider("Minimum number of unique amenity types to highlight hexagons", 1, 50, 3)
+city = st.selectbox("Select a city", list(cities.keys()))
+n = st.slider("Minimum number of unique amenity types to highlight hexagons", 1, 10, 3)
 
-# Define H3 resolution and bounding box for the area of interest
+# Get the bounding box for the selected city
+bbox = cities[city]
+
+# Define H3 resolution
 resolution = 9
-bbox = [37.7749, -122.4194, 37.8000, -122.3900]  # San Francisco example
+
+# Print the bounding box coordinates for debugging
+print(f"Bounding box coordinates: {bbox}")
 
 # Generate a grid of points within the bounding box
 lat_min, lon_min, lat_max, lon_max = bbox
