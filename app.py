@@ -8,7 +8,7 @@ from streamlit_folium import st_folium
 
 # Streamlit UI for user inputs
 st.title("Hexagon Amenity Type Visualizer")
-n = st.slider("Minimum number of unique amenity types to highlight hexagons", 1, 10, 3)
+n = st.slider("Minimum number of unique amenity types to highlight hexagons", 1, 50, 3)
 
 # Define H3 resolution and bounding box for the area of interest
 resolution = 9
