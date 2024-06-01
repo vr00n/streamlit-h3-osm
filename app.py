@@ -29,7 +29,7 @@ n = st.slider("Minimum number of unique amenity types to highlight hexagons", 1,
 bbox = cities[city]
 
 # Define H3 resolution
-resolution = 9
+resolution = 7
 
 # Print the bounding box coordinates for debugging
 print(f"Bounding box coordinates: {bbox}")
